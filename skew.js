@@ -18,7 +18,7 @@ const sketch = ({ context, width, height }) => {
   console.log(random.value())
 
   let x, y, w, h, fill, stroke, blend;
-  const num = 61;
+  const num = 62;
   const degrees = -30;
   const rects = [];
   const rectColors = [

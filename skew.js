@@ -3,15 +3,22 @@ const math = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 const Color = require('canvas-sketch-util/color');
 const risoColors = require('riso-colors');
-
+// const seed = '924182';
+const seed = random.getRandomSeed();
+const imgElem = new Image();
+imgElem.src = './100201absdl.jpg';
 const settings = {
   dimensions: [ 2048, 2048 ],
-  // animate: true
+  animate: true,
+  name:seed
 };
 
 const sketch = ({ context, width, height }) => {
+  random.setSeed(seed);
+  console.log(random.value())
+
   let x, y, w, h, fill, stroke, blend;
-  const num = 150;
+  const num = 55;
   const degrees = -30;
   const rects = [];
   const rectColors = [
@@ -44,8 +51,11 @@ const sketch = ({ context, width, height }) => {
 
     context.save();
     context.translate(mask.x, mask.y);
+    
     drawPolygon({ context, radius: mask.radius, sides: mask.sides });
+    
     context.clip(); 
+    context.drawImage(imgElem, -mask.x, -mask.y + 450, 2000, 1200)
 
     rects.forEach(rect => {
       const {x, y, w, h, fill, stroke, blend} = rect;
@@ -60,11 +70,11 @@ const sketch = ({ context, width, height }) => {
       context.globalCompositeOperation = blend;
 
       drawSkewedRect({context, w, h, degrees});
-      // shadowColor = Color.offsetHSL(fill, 0, 0, -20);
-      // shadowColor.rgba[3] = 0.5;
-      // context.shadowColor = Color.style(shadowColor.rgba);
-      // context.shadowOffsetX = -10;
-      // context.shadowOffsetY = 20;
+      shadowColor = Color.offsetHSL(fill, 0, 0, -20);
+      shadowColor.rgba[3] = 0.5;
+      context.shadowColor = Color.style(shadowColor.rgba);
+      context.shadowOffsetX = -10;
+      context.shadowOffsetY = 20;
       context.stroke();
       context.lineWidth = 2;
       context.strokeStyle = 'black';
@@ -74,6 +84,7 @@ const sketch = ({ context, width, height }) => {
       context.restore();
     });
     context.restore();
+
 
     // polygon outline
     context.save();
